@@ -38,7 +38,7 @@ jQuery(function ($) {
 
 
 
-
+	// TodoNode objects will be used to make a hierarchical tree of todos
 	function TodoNode(parent, title) {
 		this.parent = parent;
 		this.title = title;
@@ -265,7 +265,7 @@ jQuery(function ($) {
 
 
 
-
+	// The App object is in charge of managing the DOM and initializing the app
 	var App = {
 		init: function () {
 			todoRoot.load();
@@ -424,7 +424,8 @@ jQuery(function ($) {
 		
 
 
-
+		// this.updateTodoInFocus updates the title of this.todoInFocus
+			// using the text in the associated input field
 		updateTodoInFocus: function(shouldDestroyIfBlank) {
 			if (this.todoInFocus === null) return;
 			var newTitle = $("#" + this.todoInFocus.longId).find(".edit").val().trim();
@@ -436,7 +437,12 @@ jQuery(function ($) {
 			}
 		},
 
-		// todoInFocus is optional -- it updates this.todoInFocus
+		// this.render re-creates the DOM from the current data in the todo tree
+		// If the todo tree is empty, it adds one empty todo
+		// After creating the DOM, it places focus on this.todoInFocus
+		// Calling this.render immediately suppresses focusout events,
+			// and focusout events continue to be suppressed until rendering is complete
+		// todoInFocus is optional -- it updates this.todoInFocus, which is immediately used in the rendering
 		render: function (todoInFocus) {
 			if (todoInFocus !== undefined) this.todoInFocus = todoInFocus;
 			this.suppressFocusOutEvent = true;
